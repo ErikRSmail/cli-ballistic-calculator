@@ -18,7 +18,7 @@ It takes as inputs:
 
 If you just want to see it run and not mess with anything compile and run cli_example.c.
 ```
-gcc -o cli-ballistics cli_example.c -lm
+gcc -o cli-ballistics cli_example.c -lm && ./cli-ballistics
 ```
 
 I would like to continue iterating on this, but this works and is nice and simple so I will leave this repo alone and continue elsewhere. 

@@ -10,31 +10,28 @@
 double bc_correction(struct environmental_data *environmental_data){
     double altitude_factor, temperature_factor, humidity_factor, pressure_factor;
 
-    inline double calcFR(double temperature, double pressure, double relative_humidity){
-	    double VPw=4e-6*pow(temperature,3) - 0.0004*pow(temperature,2)+0.0234*temperature-0.2517;
-	    double frh=0.995*(pressure/(pressure-(0.3783)*(relative_humidity)*VPw));
-	    return frh;
+    inline double calculate_humidity_factor(double temperature, double pressure, double relative_humidity) {
+	    double vapor_pressure_weight = 4e-6*pow(temperature,3) - 0.0004*pow(temperature,2)+0.0234*temperature-0.2517;
+	    double humidity_factor = 0.995*(pressure/(pressure-(0.3783)*(relative_humidity)*vapor_pressure_weight));
+	    return humidity_factor;
     }
-    inline double calcFP(double pressure) {
-    	double p_std = 29.53;
-	    double fp=0;
-	    fp = (pressure - p_std)/(p_std);
-    	return fp;
+    inline double calculate_pressure_factor(double pressure) {
+	    double pressure_factor = (pressure - STANDARD_PRESSURE)/(STANDARD_PRESSURE);
+    	return pressure_factor;
     }
-    inline double calcFT(double temperature, double altitude) {
-	    double t_std=-0.0036*altitude+59;
-	    double FT = (temperature-t_std)/(459.6+t_std);
-	    return FT;
+    inline double calculate_temperature_factor(double temperature, double altitude) {
+	    double standard_temperature = -0.0036*altitude+STANDARD_TEMPERATURE;
+	    double temperature_factor = (temperature-standard_temperature)/(459.6+standard_temperature);
+	    return temperature_factor;
     }
-    inline double calcFA(double altitude) {
-	    double fa=0;
-	    fa=-4e-15*pow(altitude,3)+4e-10*pow(altitude,2)-3e-5*altitude+1;
-	    return (1/fa);
+    inline double calculate_altitude_factor(double altitude) {
+	    double altitude_factor = -4e-15*pow(altitude,3)+4e-10*pow(altitude,2)-3e-5*altitude+1;
+	    return (1/altitude_factor);
     }
-    altitude_factor = calcFA(environmental_data->altitude);
-    humidity_factor = calcFR(environmental_data->temperature, environmental_data->pressure, environmental_data->humidity);
-    temperature_factor = calcFT(environmental_data->temperature, environmental_data->altitude);
-    pressure_factor = calcFP(environmental_data->pressure);
+    altitude_factor = calculate_altitude_factor(environmental_data->altitude);
+    humidity_factor = calculate_humidity_factor(environmental_data->temperature, environmental_data->pressure, environmental_data->humidity);
+    temperature_factor = calculate_temperature_factor(environmental_data->temperature, environmental_data->altitude);
+    pressure_factor = calculate_pressure_factor(environmental_data->pressure);
     
     return altitude_factor * humidity_factor * (1 + temperature_factor - pressure_factor);
 }
@@ -109,12 +106,14 @@ double get_zero_angle(struct system_data *system_data) {
         vx=system_data->muzzle_velocity*cos(angle);
         Gx=GRAVITY*sin(angle);
         Gy=GRAVITY*cos(angle);
-        for (t=0,x=0,y=-(system_data->sight_height)/12;x<=system_data->zero_distance*3;t=t+dt) {
+        t=0;
+        x=0;
+        y=-(system_data->sight_height)/12;
+        while (x<=system_data->zero_distance*3) {
             vy1=vy;
             vx1=vx;
             v=pow((pow(vx,2)+pow(vy,2)),0.5);
             dt=1/v;
-
             dv = decel(system_data->drag_model, system_data->bc, v);
             dvy = -dv*vy/v*dt;
             dvx = -dv*vx/v*dt;
@@ -133,6 +132,7 @@ double get_zero_angle(struct system_data *system_data) {
             if (vy>3*vx) {
                 break;
             }
+            t += dt;
         }
 
         if (y>0 && da>0) {
@@ -170,7 +170,7 @@ void calculate_ballistics(struct ballistic_data *input){
     double dt, v, vx1, vy1, dv, dvx, dvy;
     double t = 0;
     int distance;
-    while(distance <= input->max_distance){
+    while(distance < input->max_distance){
         vx1 = vx;
         vy1 = vy;
         v = pow(pow(vx,2)+pow(vy,2),0.5);

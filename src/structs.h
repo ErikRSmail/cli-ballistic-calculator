@@ -17,7 +17,7 @@ struct environmental_data{
     double wind_angle;      // in degrees. 0 is a headwind. 90 is right to left
     double pressure;        // in inHg
     double temperature;     // in Fahrenheit
-    double humidity;        // in decimal relative humidity form
+    double humidity;        // in relative humidity
     double altitude;        // in feet
 };
 
