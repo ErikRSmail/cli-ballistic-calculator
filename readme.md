@@ -18,9 +18,11 @@ It takes as inputs:
 
 If you just want to see it run and not mess with anything compile and run cli_example.c.
 ```
-gcc -o cli-ballistics cli_example.c -lm && ./cli-ballistics
+gcc -o cli-ballistics cli_example.c -lm -Wformat=0 && ./cli-ballistics
 ```
-
-I would like to continue iterating on this, but this works and is nice and simple so I will leave this repo alone and continue elsewhere. 
+default_example.c exists for quick testing so that you don't have to go through the entire cli data entry process every time something is changed. If you don't want to use the cli interface and want to compile your input data in,
+```
+gcc -o default_example default_example.c -lm -Wformat=0 && ./default_example
+``` 
 
 Take a look at https://github.com/grimwm/libballistics. The data used for the numerical integrations here is straight from this library.
