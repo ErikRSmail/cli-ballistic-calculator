@@ -7,5 +7,5 @@
 
 int main(){
     struct ballistic_data *input = cli_init();
-    print_flight_data(input, 100);
+    print_ballistic_data(input, 100);
 }

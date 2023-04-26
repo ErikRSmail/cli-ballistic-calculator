@@ -46,7 +46,7 @@ struct ballistic_data* cli_init(){
     scanf("%lf",&input->system_data.shooting_angle);
     printf("\nEnter Zero Distance             ( yards ) : ");
     scanf("%lf",&input->system_data.zero_distance);
-    printf("\nEnter Wind Speed         (miles per hour) : ");
+    printf("\nEnter Wind Speed       ( miles per hour ) : ");
     scanf("%lf",&input->environmental_data.wind_speed);
     printf("\nEnter Wind Angle              ( degrees ) : ");
     scanf("%lf",&input->environmental_data.wind_angle);
