@@ -24,9 +24,6 @@ struct ballistic_data* default_init(){
         input->environmental_data.humidity = STANDARD_HUMIDITY;
         input->environmental_data.altitude = 0.0;
 
-        input->max_distance = 1001;
-
-        input->flight_data = (struct flight_datum*)malloc(sizeof(struct flight_datum) * input->max_distance);
         calculate_flight_data(input);
     return input;
 }
@@ -58,11 +55,10 @@ struct ballistic_data* cli_init(){
     scanf("%lf",&input->environmental_data.humidity);
     printf("\nEnter Altitude                   ( feet ) : ");
     scanf("%lf",&input->environmental_data.altitude);
-    printf("\nEnter Max Distance              ( yards ) : ");
-    scanf("%i",&input->max_distance);
-    input->max_distance++;
+    //printf("\nEnter Max Distance              ( yards ) : ");
+    //scanf("%i",&input->max_distance);
+    //input->max_distance++;
 
-    input->flight_data = (struct flight_datum*)malloc(sizeof(struct flight_datum) * input->max_distance);
     calculate_flight_data(input);
 
     return input;

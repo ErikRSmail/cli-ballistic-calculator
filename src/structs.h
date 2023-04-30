@@ -2,6 +2,7 @@
 #define STRUCTS_H
 
 #include "enums.h"
+#include "constants.h"
 
 struct system_data{
     enum drag_model drag_model;
@@ -21,18 +22,18 @@ struct environmental_data{
     double altitude;        // in feet
 };
 
-struct ballistic_data{
-    struct system_data system_data;
-    struct environmental_data environmental_data;
-    unsigned int max_distance;
-    struct flight_datum *flight_data;
-};
-
 struct flight_datum{
     double velocity;           // in ft/s
     double vertical_offset;    // in inches
     double horizontal_offset;  // in inches
     double time_of_flight;     // in seconds
+};
+
+struct ballistic_data{
+    struct system_data system_data;
+    struct environmental_data environmental_data;
+    unsigned int max_distance;
+    struct flight_datum flight_data[MAX_DISTANCE];
 };
 
 #endif

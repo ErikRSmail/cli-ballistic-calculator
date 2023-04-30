@@ -170,7 +170,7 @@ void calculate_flight_data(struct ballistic_data *input){
     double dt, v, vx1, vy1, dv, dvx, dvy;
     double t = 0;
     int distance;
-    while(distance < input->max_distance){
+    while(distance < MAX_DISTANCE){
         vx1 = vx;
         vy1 = vy;
         v = pow(pow(vx,2)+pow(vy,2),0.5);
