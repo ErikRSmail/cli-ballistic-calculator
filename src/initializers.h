@@ -2,8 +2,8 @@
 #define INITIALIZERS_H
 
 #include <stdlib.h>
-#include <stdio.h>
-#include <assert.h>
+
+#include "enums.h"
 #include "calculations.h"
 #include "constants.h"
 #include "structs.h"
