@@ -2,6 +2,7 @@
 #define IO_FUNCTIONS H
 
 #include <stdio.h>
+#include <math.h>
 
 #include "calculations.h"
 #include "structs.h"
@@ -10,7 +11,16 @@
 
 void print_flight_data(struct flight_datum *data, struct print_options *options){
     printf("\n=== Flight Data ===\n\n");
-    for(int i = 0; i <= options->max_distance; i+= options->step_size){
+
+    inline double calculate_moa(double linear_correction, unsigned int distance){
+        return atan2(linear_correction, (double)distance * YARD_TO_INCH) * RAD_TO_MOA;
+    }
+
+    inline double calculate_mil(double linear_correction, unsigned int distance){
+        return atan2(linear_correction, (double)distance * YARD_TO_INCH) * RAD_TO_MILLIRAD;
+    }
+
+    for(int i = options->step_size; i <= options->max_distance; i+= options->step_size){
         printf("Distance (yards): %i    ", i);
         if(options->print_velocity){
             printf("Velocity (ft/s): %.0f    ", data[i].velocity);
@@ -19,10 +29,23 @@ void print_flight_data(struct flight_datum *data, struct print_options *options)
             if(options->print_linear_correction){
                 printf("Vertical Offset (inches): %.2f    ", data[i].vertical_offset);
             }
+            if(options->print_moa_correction){
+                printf("Vertical Offset (MOA): %.2f    ", calculate_moa(data[i].vertical_offset, i));
+            }
+            if(options->print_mil_correction){
+                printf("Vertical Offset (MIL): %.2f    ", calculate_mil(data[i].vertical_offset, i));
+            }
+
         }
         if(options->print_horizontal_correction){
             if(options->print_linear_correction){
                 printf("Horizontal Offset (inches): %.2f    ", data[i].horizontal_offset);
+            }
+            if(options->print_moa_correction){
+                printf("Horizontal Offset (MOA): %.2f    ", calculate_moa(data[i].horizontal_offset, i));
+            }
+            if(options->print_mil_correction){
+                printf("Horizontal Offset (MIL): %.2f    ", calculate_mil(data[i].horizontal_offset, i));
             }
         }
         if(options->print_time_of_flight){
@@ -30,7 +53,7 @@ void print_flight_data(struct flight_datum *data, struct print_options *options)
         }
         printf("\n");
     }
-}//TODO make this print MIL/MOA corrections
+}
 
 void print_environmental_data(struct environmental_data *data){
     printf("\n=== Environmental Data ===\n");

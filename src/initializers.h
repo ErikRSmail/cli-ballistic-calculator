@@ -72,8 +72,8 @@ struct print_options* default_options(){
         options->print_vertical_correction = 1;
 
         options->print_moa_correction = 0;
-        options->print_mil_correction = 0;
-        options->print_linear_correction = 1;
+        options->print_mil_correction = 1;
+        options->print_linear_correction = 0;
 
         options->print_velocity = 1;
         options->print_time_of_flight = 1;
