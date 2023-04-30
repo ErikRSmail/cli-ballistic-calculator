@@ -10,10 +10,31 @@
 
 void print_flight_data(struct ballistic_data *data, struct print_options *options){
     printf("\n=== Flight Data ===\n\n");
+    /*
     for(int i = 0; i <= options->max_distance; i += options->step_size){
         printf("Distance (yards): %i    Velocity (ft/s): %.0f    Vertical Offset (inches): %.2f    Horizontal Offset (inches): %.2f    ToF (seconds): %.2f\n", i, data->flight_data[i].velocity, data->flight_data[i].vertical_offset, data->flight_data[i].horizontal_offset, data->flight_data[i].time_of_flight);
+    }*/
+    for(int i = 0; i <= options->max_distance; i+= options->step_size){
+        printf("Distance (yards): %i    ", i);
+        if(options->print_velocity){
+            printf("Velocity (ft/s): %.0f    ", data->flight_data[i].velocity);
+        }
+        if(options->print_vertical_correction){
+            if(options->print_linear_correction){
+                printf("Vertical Offset (inches): %.2f    ", data->flight_data[i].vertical_offset);
+            }
+        }
+        if(options->print_horizontal_correction){
+            if(options->print_linear_correction){
+                printf("Horizontal Offset (inches): %.2f    ", data->flight_data[i].horizontal_offset);
+            }
+        }
+        if(options->print_time_of_flight){
+            printf("ToF (seconds): %.2f    ", data->flight_data[i].time_of_flight);
+        }
+        printf("\n");
     }
-}
+}//TODO make this incorporate our different printing settings.
 
 void print_environmental_data(struct environmental_data *data){
     printf("\n=== Environmental Data ===\n");
