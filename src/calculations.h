@@ -151,7 +151,7 @@ double get_zero_angle(struct system_data *system_data) {
   return RAD_TO_DEG * angle;
 }
 
-void calculate_ballistics(struct ballistic_data *input){
+void calculate_flight_data(struct ballistic_data *input){
     input->system_data.bc *= bc_correction(&input->environmental_data);
     double zero_angle = get_zero_angle(&input->system_data);
 

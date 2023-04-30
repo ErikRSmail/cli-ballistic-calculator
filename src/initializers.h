@@ -27,7 +27,7 @@ struct ballistic_data* default_init(){
         input->max_distance = 1001;
 
         input->flight_data = (struct flight_data*)malloc(sizeof(struct flight_data) * input->max_distance);
-        calculate_ballistics(input);
+        calculate_flight_data(input);
     return input;
 }
 
@@ -63,7 +63,7 @@ struct ballistic_data* cli_init(){
     input->max_distance++;
 
     input->flight_data = (struct flight_data*)malloc(sizeof(struct flight_data) * input->max_distance);
-    calculate_ballistics(input);
+    calculate_flight_data(input);
 
     return input;
 }
