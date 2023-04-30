@@ -25,10 +25,10 @@ struct ballistic_data{
     struct system_data system_data;
     struct environmental_data environmental_data;
     unsigned int max_distance;
-    struct flight_data *flight_data;
+    struct flight_datum *flight_data;
 };
 
-struct flight_data{
+struct flight_datum{
     double velocity;           // in ft/s
     double vertical_offset;    // in inches
     double horizontal_offset;  // in inches
