@@ -36,4 +36,23 @@ struct ballistic_data{
     struct flight_datum flight_data[MAX_DISTANCE];
 };
 
+struct print_options{
+    unsigned int print_system_data;
+    unsigned int print_environmental_data;
+    unsigned int print_flight_data;
+
+    unsigned int print_horizontal_correction;
+    unsigned int print_vertical_correction;
+
+    unsigned int print_moa_correction;
+    unsigned int print_mil_correction;
+    unsigned int print_linear_correction;
+
+    unsigned int print_velocity;
+    unsigned int print_time_of_flight;
+
+    unsigned int step_size;
+    unsigned int max_distance;
+};
+
 #endif

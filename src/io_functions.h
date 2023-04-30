@@ -8,9 +8,9 @@
 #include "constants.h"
 #include "enums.h"
 
-void print_flight_data(struct ballistic_data *data, unsigned int step_size){
+void print_flight_data(struct ballistic_data *data, struct print_options *options){
     printf("\n=== Flight Data ===\n\n");
-    for(int i = 0; i < MAX_DISTANCE; i += step_size){
+    for(int i = 0; i <= options->max_distance; i += options->step_size){
         printf("Distance (yards): %i    Velocity (ft/s): %.0f    Vertical Offset (inches): %.2f    Horizontal Offset (inches): %.2f    ToF (seconds): %.2f\n", i, data->flight_data[i].velocity, data->flight_data[i].vertical_offset, data->flight_data[i].horizontal_offset, data->flight_data[i].time_of_flight);
     }
 }
@@ -37,9 +37,15 @@ void print_system_data(struct system_data *data){
     printf("\n");
 }
 
-void print_ballistic_data(struct ballistic_data *data, unsigned int step_size){
-    print_system_data(&data->system_data);
-    print_environmental_data(&data->environmental_data);
-    print_flight_data(data, step_size);
+void print_ballistic_data(struct ballistic_data *data, struct print_options *options){
+    if (options->print_system_data){
+        print_system_data(&data->system_data);
+    }
+    if (options->print_environmental_data){
+        print_environmental_data(&data->environmental_data);
+    }
+    if (options->print_flight_data){
+        print_flight_data(data, options);
+    }
 }
 #endif

@@ -6,6 +6,7 @@
 #include <assert.h>
 #include "calculations.h"
 #include "constants.h"
+#include "structs.h"
 
 //This example simulates a 147gr .308 out of a 20 inch barrel @STP with a 5mph crosswind. It only exists for demo/testing purposes
 struct ballistic_data* default_init(){
@@ -55,13 +56,32 @@ struct ballistic_data* cli_init(){
     scanf("%lf",&input->environmental_data.humidity);
     printf("\nEnter Altitude                   ( feet ) : ");
     scanf("%lf",&input->environmental_data.altitude);
-    //printf("\nEnter Max Distance              ( yards ) : ");
-    //scanf("%i",&input->max_distance);
-    //input->max_distance++;
 
     calculate_flight_data(input);
 
     return input;
+}
+
+struct print_options* default_options(){
+    struct print_options *options = (struct print_options*)malloc(sizeof(struct print_options));
+        options->print_system_data = 1;
+        options->print_environmental_data = 1;
+        options->print_flight_data = 1;
+
+        options->print_horizontal_correction = 1;
+        options->print_vertical_correction = 1;
+
+        options->print_moa_correction = 0;
+        options->print_mil_correction = 0;
+        options->print_linear_correction = 1;
+
+        options->print_velocity = 1;
+        options->print_time_of_flight = 1;
+
+        options->step_size = 100;
+        options->max_distance = 1000;
+
+    return options;
 }
 
 #endif
