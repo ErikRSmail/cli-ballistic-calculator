@@ -2,6 +2,7 @@
 #define INITIALIZERS_H
 
 #include <stdlib.h>
+#include <stdio.h>
 
 #include "enums.h"
 #include "calculations.h"
@@ -9,7 +10,7 @@
 #include "structs.h"
 
 //This example simulates a 147gr .308 out of a 20 inch barrel @STP with a 5mph crosswind. It only exists for demo/testing purposes
-struct ballistic_data* default_init(){
+struct ballistic_data* default_ballistic_data_init(){
     struct ballistic_data *input = (struct ballistic_data*)malloc(sizeof(struct ballistic_data));
         input->system_data.drag_model = G1;
         input->system_data.bc = 0.415;
@@ -29,7 +30,7 @@ struct ballistic_data* default_init(){
     return input;
 }
 
-struct ballistic_data* cli_init(){
+struct ballistic_data* cli_ballistic_data_init(){
     struct ballistic_data *input = (struct ballistic_data*)malloc(sizeof(struct ballistic_data));
 
     printf("\nEnter Drag Model              ( G1 or G7 ): G");
@@ -83,5 +84,69 @@ struct print_options* default_options(){
 
     return options;
 }
+
+struct print_options* cli_options_init(){
+    struct print_options *options = (struct print_options*)malloc(sizeof(struct print_options));
+        inline unsigned int yn_to_bool(char in){
+            if(in == 'y'){
+                return 1;
+            }
+            else if(in == 'n'){
+                return 0;
+            }
+        }
+
+        char in;
+        printf("\nPrint System Data? (y/n) : ");
+        scanf(" %c", &in);
+        options->print_system_data = yn_to_bool(in);
+
+        printf("\nPrint Environmental Data? (y/n) : ");
+        scanf(" %c", &in);
+        options->print_environmental_data = yn_to_bool(in);
+
+        printf("\nPrint Flight Data? (y/n) : ");
+        scanf(" %c", &in);
+        options->print_flight_data = yn_to_bool(in);
+        
+        if(options->print_flight_data){
+            printf("\nPrint Vertical Correction? (y/n) : ");
+            scanf(" %c", &in);
+            options->print_vertical_correction = yn_to_bool(in);
+        
+            printf("\nPrint Horizontal Correction? (y/n) : ");
+            scanf(" %c", &in);
+            options->print_horizontal_correction = yn_to_bool(in);
+        
+            printf("\nPrint Corrections in MOA? (y/n) : ");
+            scanf(" %c", &in);
+            options->print_moa_correction = yn_to_bool(in);
+        
+            printf("\nPrint Corrections in MIL? (y/n) : ");
+            scanf(" %c", &in);
+            options->print_mil_correction = yn_to_bool(in);
+        
+            printf("\nPrint Correction in Inches? (y/n) : ");
+            scanf(" %c", &in);
+            options->print_linear_correction = yn_to_bool(in);
+        
+            printf("\nPrint Velocity? (y/n) : ");
+            scanf(" %c", &in);
+            options->print_velocity = yn_to_bool(in);
+        
+            printf("\nPrint Time of Flight? (y/n) : ");
+            scanf(" %c", &in);
+            options->print_time_of_flight = yn_to_bool(in);
+        
+            printf("\nMax distance? (yards) : ");
+            scanf(" %i", &options->max_distance);
+            printf("\nPrinting interval? (yards) : ");
+            scanf(" %i", &options->step_size);
+        }
+
+    return options;
+}
+
+
 
 #endif
